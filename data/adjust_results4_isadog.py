@@ -77,19 +77,17 @@ def adjust_results4_isadog(results_dic, dogfile):
 
         if line not in dognames_dict:
           dognames_dict[line] = 1
-        else:
-          print("** Warning: Key=", line, 
-                    "already exists in results_dic with value =", 
-                    dognames_dict[line])
-
+          
         line = file.readline()
 
-    for name, values in results_dic.items():
-      if values[0] in dognames_dict and values[1] in dognames_dict:
-        values.extend((1, 1))
-      elif values[0] in dognames_dict and values[1] not in dognames_dict:
-        values.extend((1, 0))
-      elif values[0] not in dognames_dict and values[1] in dognames_dict:
-        values.extend((0, 1))
-      else:
-        values.extend((0, 0))
+
+    for key, values in results_dic.items():
+      pet_name = values[0]
+      classifier_name = values[1]
+
+      # Initialize flags for dog name matches
+      pet_match = 1 if pet_name in dog_names else 0
+      classifier_match = 1 if classifier_name in dog_names else 0
+
+      # Extend the values list with the match results
+      values.extend([pet_match, classifier_match])
